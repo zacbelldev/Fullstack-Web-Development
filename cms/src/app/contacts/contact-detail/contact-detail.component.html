@@ -1,30 +1,18 @@
 <div class="row">
-  <div class="col-xs-12">
-    <img src="" alt="" class="img-responsive">
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-    <h1>Contact Name</h1>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-
-
-
-
-    <div class="btn-group">
-      <button class="btn btn-primary dropdown-toggle">Manage Contact <span class="caret"></span></button>
-      <ul class="dropdown-menu">
-        <li><a href="#">Edit</a></li>
-        <li><a href="#">Delete</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-    Details
+  <div class="col-xs-6">
+      <div class="panel panel-default" *ngFor="let contact of contacts">
+        <div class="panel-heading" style="min-height: 170px;">
+            <h3>{{ contact.name }}</h3>
+            <span class="pull-left">
+                <img [src]="contact.imageUrl" alt="{{ contact.name }}" class="img-responsive" style="max-height: 90px;">
+              </span>
+            <button class="btn btn-primary pull-right" style="margin: 5px 10px;">Edit</button>
+            <button class="btn btn-danger pull-right" style="margin: 5px 10px;">Delete</button>
+        </div>
+        <div class="panel-body">
+            <h6>Email: {{ contact.email }}</h6>
+            <h6>Phone: {{ contact.phone }}</h6>
+        </div>
+      </div>
   </div>
 </div>
