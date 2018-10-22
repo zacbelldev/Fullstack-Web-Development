@@ -17,7 +17,7 @@ export class MessageEditComponent implements OnInit {
     const msgText = this.msgText.nativeElement.value;
     const newMessageObj = new Message(1, subject, msgText, this.currentSender);
     this.addMessageEvent.emit(newMessageObj);
-    // this.onClear();
+    this.onClear();
   }
 
   onClear() {
