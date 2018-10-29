@@ -9,12 +9,12 @@ import { DocumentsService } from '../documents.service';
 })
 export class DocumentListComponent implements OnInit {
 
-  @Output() selectedDocumentEvent = new EventEmitter<Document>();
+  // @Output() selectedDocumentEvent = new EventEmitter<Document>();
 
   documents: Document[] = [];
 
-  onSelectedDocument(document: Document) {
-    this.selectedDocumentEvent.emit(document);
+  onSelectedDocument(document: Document[]) {
+    this.documentService.documentSelectedEvent.emit(document);
   }
 
   constructor(private documentService: DocumentsService) {
