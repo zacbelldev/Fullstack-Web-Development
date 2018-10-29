@@ -13,5 +13,5 @@ export class ContactDetailComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  
 }
