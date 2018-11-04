@@ -1,4 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DocumentsService } from '../documents.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'cms-document-detail',
@@ -6,9 +8,11 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./document-detail.component.css']
 })
 export class DocumentDetailComponent implements OnInit {
-  @Input() document: Document;
+  document: Document;
 
-  constructor() { }
+  constructor(private documentService: DocumentsService, private router: Router, private route: ActivatedRoute) { 
+    this.document = this.documentService.getDocuments();
+  }
 
   ngOnInit() {
   }

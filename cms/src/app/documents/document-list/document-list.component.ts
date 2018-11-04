@@ -13,10 +13,6 @@ export class DocumentListComponent implements OnInit {
 
   documents: Document[] = [];
 
-  onSelectedDocument(document: Document[]) {
-    this.documentService.documentSelectedEvent.emit(document);
-  }
-
   constructor(private documentService: DocumentsService) {
     this.documents = this.documentService.getDocuments();
   }
