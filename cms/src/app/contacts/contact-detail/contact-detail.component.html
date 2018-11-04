@@ -7,8 +7,8 @@
         <span class="pull-left">
           <img [src]="contacts.imageUrl" alt="{{ contacts.name }}" class="img-responsive" style="max-height: 90px;">
         </span>
-        <button class="btn btn-primary pull-right" style="margin: 5px 10px;">Edit</button>
-        <button class="btn btn-danger pull-right" style="margin: 5px 10px;">Delete</button>
+        <a [routerLink]="['edit']" class="btn btn-primary pull-right" style="margin: 5px 10px;">Edit</a>
+        <a (click)="onDelete()" class="btn btn-danger pull-right" style="margin: 5px 10px;">Delete</a>
       </div>
       <div class="panel-body">
         <h6>Email: {{ contacts.email }}</h6>

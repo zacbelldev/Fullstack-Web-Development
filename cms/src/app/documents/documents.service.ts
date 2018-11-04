@@ -8,12 +8,13 @@ import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 export class DocumentsService {
 
   documentSelectedEvent = new EventEmitter<Document[]>();
+  documentChangedEvent = new EventEmitter<Document[]>();
 
   documents: Document[];
 
   getDocument(id: string): Document {
-    for(let document of this.documents){
-      if(document.id === id){
+    for (let document of this.documents) {
+      if (document.id === id) {
         return document
       }
     }
@@ -24,7 +25,20 @@ export class DocumentsService {
     return this.documents.slice();
   }
 
-  constructor() { 
+  deleteDocument(document: Document) {
+    if (document === null) {
+      return;
+    }
+
+    const pos = this.documents.indexOf(document);
+    if (pos < 0) {
+      return;
+    }
+    this.documents.splice(pos, 1);
+    this.documentChangedEvent.emit(this.documents.slice());
+  }
+
+  constructor() {
     this.documents = MOCKDOCUMENTS;
   }
 }
