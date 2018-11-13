@@ -29,7 +29,7 @@ export class ContactEditComponent implements OnInit {
       (params: Params) => {
         let id = params['id'];
 
-        if (id === undefined || id === null) {
+        if (!id) {
           this.editMode = false;
           return;
         }
@@ -53,7 +53,7 @@ export class ContactEditComponent implements OnInit {
 
     let values = form.value;
 
-    let newContact = new Contact('', values.name, values.email, values.phone, values.imageUrl, values.groupContacts);
+    let newContact = new Contact('', values.name, values.email, values.phone, values.imageUrl, this.groupContacts);
 
     if (this.editMode === true) {
       this.contactService.updateContact(this.originalContact, newContact);
@@ -61,11 +61,11 @@ export class ContactEditComponent implements OnInit {
       this.contactService.addContact(newContact);
     }
 
-    this.router.navigate(['/contact']);
+    this.router.navigate(['/contacts']);
   }
 
   onCancel() {
-    this.router.navigate(['/contact']);
+    this.router.navigate(['/contacts']);
   }
 
   isInvalidContact(newContact: Contact) {
