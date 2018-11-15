@@ -7,12 +7,12 @@
       </div> -->
       <div class="panel-heading">
         <div class="row">
-          <span class="title pad-left-right">Contacts</span>
+          <span class="title pad-left-right"><strong>Contacts</strong></span>
         </div>
         <div class="row">
           <div class="input-group pull-left pad-left-right col-xs-7">
             
-            <!-- Add the search box input field here -->
+            <!-- Add the search box input field here    | contactsFilter:searchBox.value:'term'     | contactsFilter:'value'    -->
             <input type="text" #searchBox class="form-control" placeholder="Enter search value" (keyup)="onKeyPress(searchBox.value)">
     
             <div class="glyphicon glyphicon glyphicon-search input-group-addon" (click)="search(searchBox.value)"></div>
@@ -24,7 +24,7 @@
       </div>
       <div class="panel-body">
          <cms-contact-item 
-         *ngFor="let contact of contacts | contactsFilter:'term'" 
+         *ngFor="let contact of contacts | contactsFilter:[term]" 
          [contact]="contact" 
          dnd-draggable 
          [dragEnabled]="true" 

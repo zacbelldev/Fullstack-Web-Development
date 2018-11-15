@@ -15,6 +15,7 @@ export class ContactListComponent implements OnInit {
 
   onKeyPress(value: string) {
     this.term = value;
+    console.log('SEARCH TERM', value);
   }
 
   constructor(private contactService: ContactService) {
