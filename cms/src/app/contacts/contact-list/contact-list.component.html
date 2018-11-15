@@ -24,7 +24,7 @@
       </div>
       <div class="panel-body">
          <cms-contact-item 
-         *ngFor="let contact of contacts | contactsFilter:[term]" 
+         *ngFor="let contact of contacts | contactsFilter:term" 
          [contact]="contact" 
          dnd-draggable 
          [dragEnabled]="true" 

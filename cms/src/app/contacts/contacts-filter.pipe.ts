@@ -6,12 +6,14 @@ import { Contact } from './contact.model';
 })
 export class ContactsFilterPipe implements PipeTransform {
 
-  transform(contacts: Contact[], [term]) {
+  transform(contacts: Contact[], term: string) {
     let filteredArray: Contact[] = [];
 
-    filteredArray = contacts.filter(
-      (contact: any) => contact.name.toLowerCase().includes(term.toLowerCase())
-    );
+    if (term && term.length > 0) {
+      filteredArray = contacts.filter(
+        (contact: Contact) => contact.name.toLowerCase().includes(term.toLowerCase())
+      );
+    }
 
     if (filteredArray.length < 1) {
       return contacts;
