@@ -9,14 +9,11 @@ export class ContactsFilterPipe implements PipeTransform {
   transform(contacts: Contact[], [term]) {
     let filteredArray: Contact[] = [];
 
-    for (let i=0; i < contacts.length; i++) {
-      let contact = contacts[i];
-      if (contact.name.toLowerCase().includes(term)) {
-        filteredArray.push(contact);
-      }
-    }
+    filteredArray = contacts.filter(
+      (contact: any) => contact.name.toLowerCase().includes(term.toLowerCase())
+    );
 
-    if (filteredArray.length > 1) {
+    if (filteredArray.length < 1) {
       return contacts;
     }
 
