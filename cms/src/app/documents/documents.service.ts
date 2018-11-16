@@ -54,10 +54,6 @@ export class DocumentsService {
     return null;
   }
 
-  // getDocuments(): Document[] {
-  //   return this.documents.slice();
-  // }
-
   getMaxId(): number {
     let maxId = 0;
     for (let document of this.documents) {
@@ -70,7 +66,7 @@ export class DocumentsService {
   }
 
   addDocument(newDocument: Document) {
-    if (newDocument == null || newDocument == undefined) {
+    if (!newDocument) {
       return;
     }
     this.maxDocumentId++;
