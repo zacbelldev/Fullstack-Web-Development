@@ -13,16 +13,23 @@ export class DocumentsService {
   documentChangedEvent = new EventEmitter<Document[]>();
   documentListChangedEvent = new Subject<Document[]>();
 
-  documents: Document[];
+  documents: Document[] = [];
   maxDocumentId: number;
 
   constructor(private http: HttpClient) {
-    this.documents = MOCKDOCUMENTS;
+    // this.documents = MOCKDOCUMENTS;
     this.maxDocumentId = this.getMaxId();
   }
 
-  storeDocuments() {
-    // return this.http.put('https://ng-recipe-book.firebaseio.com/recipes.json', this.recipeService.getRecipes());
+  storeDocuments(): any {
+    this.documents = JSON.parse(JSON.stringify(this.documents));
+    const header = new HttpHeaders({ 'Content-Type': 'application/json' });
+    this.http.put('https://cms-data-9c4e6.firebaseio.com/documents.json', this.documents, { headers: header})
+    .subscribe(
+      (documents: Document[]) => {
+        this.documentListChangedEvent.next(this.documents.slice());
+      }
+    );
   }
 
   getDocuments() {
@@ -69,8 +76,9 @@ export class DocumentsService {
     this.maxDocumentId++;
     newDocument.id = String(this.maxDocumentId);
     this.documents.push(newDocument);
-    let documentsListClone = this.documents.slice();
-    this.documentListChangedEvent.next(documentsListClone);
+    // let documentsListClone = this.documents.slice();
+    // this.documentListChangedEvent.next(documentsListClone);
+    this.storeDocuments();
   }
 
   updateDocument(originalDocument: Document, newDocument: Document) {
@@ -86,7 +94,8 @@ export class DocumentsService {
     newDocument.id = originalDocument.id;
     this.documents[pos] = newDocument;
     let documentsListClone = this.documents.slice();
-    this.documentListChangedEvent.next(documentsListClone);
+    // this.documentListChangedEvent.next(documentsListClone);
+    this.storeDocuments();
   }
 
   deleteDocument(document: Document) {
@@ -101,6 +110,7 @@ export class DocumentsService {
 
     this.documents.splice(pos, 1);
     let documentsListClone = this.documents.slice();
-    this.documentListChangedEvent.next(documentsListClone);
+    // this.documentListChangedEvent.next(documentsListClone);
+    this.storeDocuments();
   }
 }
