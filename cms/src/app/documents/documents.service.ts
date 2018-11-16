@@ -21,7 +21,7 @@ export class DocumentsService {
     this.maxDocumentId = this.getMaxId();
   }
 
-  storeDocuments(): any {
+  storeDocuments() {
     this.documents = JSON.parse(JSON.stringify(this.documents));
     const header = new HttpHeaders({ 'Content-Type': 'application/json' });
     this.http.put('https://cms-data-9c4e6.firebaseio.com/documents.json', this.documents, { headers: header})
@@ -93,7 +93,7 @@ export class DocumentsService {
 
     newDocument.id = originalDocument.id;
     this.documents[pos] = newDocument;
-    let documentsListClone = this.documents.slice();
+    // let documentsListClone = this.documents.slice();
     // this.documentListChangedEvent.next(documentsListClone);
     this.storeDocuments();
   }
@@ -109,7 +109,7 @@ export class DocumentsService {
     }
 
     this.documents.splice(pos, 1);
-    let documentsListClone = this.documents.slice();
+    // let documentsListClone = this.documents.slice();
     // this.documentListChangedEvent.next(documentsListClone);
     this.storeDocuments();
   }
