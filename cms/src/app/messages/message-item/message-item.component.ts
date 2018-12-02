@@ -20,8 +20,8 @@ export class MessageItemComponent implements OnInit {
 
   ngOnInit() {
     let contact: Contact = this.contactService.getContact(this.message.sender);
-    this.messageSender = contact.name;
-    console.log('asdfasdf', contact.name);
+    this.messageSender = contact ? contact.name : 'Contact not loaded';
+    // console.log('asdfasdf', contact.name);
   }
 
 }
