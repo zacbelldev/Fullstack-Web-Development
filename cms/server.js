@@ -32,10 +32,28 @@ app.use(logger('dev')); // Tell express to use the Morgan logger
 app.use(express.static(path.join(__dirname, 'dist/cms')));
 
 // Tell express to map the default route ("/") to the index route
-app.use('/', index);
-app.use('/messages', messageRoutes);
-app.use('/contacts', contactRoutes);
-app.use('/documents', documentsRoutes);
+
+
+
+
+
+
+// uncomment this once we figure out this error:
+// "Router.use() requires a middleware function but got a Object
+// at Function.use"
+
+// app.use('/', index);
+// app.use('/messages', messageRoutes);
+// app.use('/contacts', contactRoutes);
+// app.use('/documents', documentsRoutes);
+
+
+
+
+
+
+
+
 
 // ... ADD YOUR CODE TO MAP YOUR URL'S TO ROUTING FILES HERE ...
 

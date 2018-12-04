@@ -27,7 +27,7 @@ export class ContactService {
   }
 
   getContacts() {
-    this.http.get('https://cms-data-9c4e6.firebaseio.com/contacts.json')
+    this.http.get('https://localhost:3000/contacts')
       .subscribe(
         (contacts: Contact[]) => {
           this.contacts = contacts;
@@ -64,48 +64,100 @@ export class ContactService {
   }
 
   addContact(newContact: Contact) {
-    if (newContact == null || newContact == undefined) {
+    if (!newContact) {
       return;
     }
-    this.maxContactId++;
-    newContact.id = String(this.maxContactId);
-    this.contacts.push(newContact);
-    // let contactsListClone = this.contacts.slice();
-    // this.contactListChangedEvent.next(contactsListClone);
-    this.storeContacts();
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    newContact.id = '';
+    const strContact = JSON.stringify(newContact);
+
+    this.http.post('http://localhost:3000/contacts', strContact, { headers: headers })
+      // .map(
+      //   (res: Response) => {
+      //     return res.json().obj;
+      //   })
+      .subscribe(
+        (contacts: Contact[]) => {
+          this.contacts = contacts;
+          this.contactChangedEvent.next(this.contacts.slice());
+        });
+
+    // if (newContact == null || newContact == undefined) {
+    //   return;
+    // }
+    // this.maxContactId++;
+    // newContact.id = String(this.maxContactId);
+    // this.contacts.push(newContact);
+    // this.storeContacts();
   }
 
   updateContact(originalContact: Contact, newContact: Contact) {
-    if (originalContact === null || newContact === null || newContact=== undefined || originalContact === undefined) {
+    if (!originalContact || !newContact) {
       return;
     }
 
-    let pos = this.contacts.indexOf(originalContact);
+    const pos = this.contacts.indexOf(originalContact);
     if (pos < 0) {
       return;
     }
 
-    newContact.id = originalContact.id;
-    this.contacts[pos] = newContact;
-    // let contactsListClone = this.contacts.slice();
-    // this.contactListChangedEvent.next(contactsListClone);
-    this.storeContacts();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    const strContact = JSON.stringify(newContact);
+
+    this.http.patch('http://localhost:3000/contacts/' + originalContact.id
+      , strContact
+      , { headers: headers })
+      // .map(
+      //   (res: Response) => {
+      //     return res.json().obj;
+      //   })
+      .subscribe(
+        (contacts: Contact[]) => {
+          this.contacts = contacts;
+          this.contactChangedEvent.next(this.contacts.slice());
+        });
+    // if (originalContact === null || newContact === null || newContact=== undefined || originalContact === undefined) {
+    //   return;
+    // }
+    // let pos = this.contacts.indexOf(originalContact);
+    // if (pos < 0) {
+    //   return;
+    // }
+    // newContact.id = originalContact.id;
+    // this.contacts[pos] = newContact;
+    // this.storeContacts();
   }
 
   deleteContact(contact: Contact) {
-    if (contact === null || contact === undefined) {
+    if (!contact) {
       return;
     }
 
-    let pos = this.contacts.indexOf(contact);
-    if (pos < 0) {
-      return;
-    }
-
-    this.contacts.splice(pos, 1);
-    // let contactsListClone = this.contacts.slice();
-    // this.contactListChangedEvent.next(contactsListClone);
-    this.storeContacts();
+    this.http.delete('http://localhost:3000/contacts/' + contact.id)
+    // .map(
+      //   (res: Response) => {
+      //     return res.json().obj;
+      //   })
+      .subscribe(
+        (contacts: Contact[]) => {
+          this.contacts = contacts;
+          this.contactChangedEvent.next(this.contacts.slice());
+        }); 
+    // if (contact === null || contact === undefined) {
+    //   return;
+    // }
+    // let pos = this.contacts.indexOf(contact);
+    // if (pos < 0) {
+    //   return;
+    // }
+    // this.contacts.splice(pos, 1);
+    // this.storeContacts();
   }
   
   constructor(private http: HttpClient) {

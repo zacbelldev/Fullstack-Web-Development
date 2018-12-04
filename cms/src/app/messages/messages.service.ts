@@ -34,7 +34,7 @@ export class MessagesService {
   }
 
   getMessages() {
-    this.http.get('https://cms-data-9c4e6.firebaseio.com/messages.json')
+    this.http.get('http://localhost:3000/messages/')
       .subscribe(
         (messages: Message[]) => {
           this.messages = messages;
@@ -70,11 +70,30 @@ export class MessagesService {
     if (!newMessage) {
       return;
     }
-    this.maxMessageId++;
-    newMessage.id = String(this.maxMessageId);
-    this.messages.push(newMessage);
-    // this.messageChangeEvent.emit(this.messages.slice());
-    this.storeMessages();
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    newMessage.id = '';
+    const strMessage = JSON.stringify(newMessage);
+
+    this.http.post('http://localhost:3000/messages', strMessage, { headers: headers })
+      // .map(
+      //   (res: Response) => {
+      //     return res.json().obj;
+      //   })
+      .subscribe(
+        (messages: Message[]) => {
+          this.messages = messages;
+          this.messageListChangedEvent.next(this.messages.slice());
+        });
+    // if (!newMessage) {
+    //   return;
+    // }
+    // this.maxMessageId++;
+    // newMessage.id = String(this.maxMessageId);
+    // this.messages.push(newMessage);
+    // this.storeMessages();
   }
 
 
