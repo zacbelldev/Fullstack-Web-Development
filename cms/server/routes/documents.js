@@ -2,7 +2,9 @@ var express = require('express');
 var router = express.Router();
 var Document = require("../models/document");
 
-getDocuments((req, res) => {
+
+var getDocuments = function (req, res) {
+  // getDocuments((req, res) => {
   Document.find(req.params.id, (err, document) => {
     if (err)
       res.status(500).json({
@@ -13,9 +15,10 @@ getDocuments((req, res) => {
         document: 'Added successfully'
       });
   });
-});
+}
 
-saveDocument((req, res) => {
+var saveDocument = function (req, res) {
+  // saveDocument((req, res) => {
   Document.save(req.params.id, (err, document) => {
     if (err)
       res.status(500).json({
@@ -23,9 +26,10 @@ saveDocument((req, res) => {
       });
     getDocuments(document);
   });
-});
+}
 
-deleteDocument((req, res) => {
+var deleteDocument = function (req, res) {
+  // deleteDocument((req, res) => {
   Document.remove(req.params.id, (err, document) => {
     if (err)
       res.status(500).json({
@@ -33,7 +37,7 @@ deleteDocument((req, res) => {
       });
     getDocuments(document);
   });
-});
+}
 
 router.get('/', function (req, res) {
   getDocuments(res);

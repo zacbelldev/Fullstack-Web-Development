@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var Message = require("../models/message");
 
-getMessages((req, res) => {
+var getMessages = function (req, res) {
+  // getMessages((req, res) => {
   Message.find(req.params.id, (err, message) => {
     if (err)
       res.status(500).json({
@@ -13,9 +14,10 @@ getMessages((req, res) => {
         message: 'Added successfully'
       });
   });
-});
+}
 
-saveMessage((req, res) => {
+var saveMessage = function (req, res) {
+  // saveMessage((req, res) => {
   Message.save(req.params.id, (err, message) => {
     if (err)
       res.status(500).json({
@@ -23,9 +25,10 @@ saveMessage((req, res) => {
       });
     getMessages(message);
   });
-});
+}
 
-deleteMessage((req, res) => {
+var deleteMessage = function (req, res) {
+  // deleteMessage((req, res) => {
   Message.remove(req.params.id, (err, message) => {
     if (err)
       res.status(500).json({
@@ -33,7 +36,7 @@ deleteMessage((req, res) => {
       });
     getMessages(message);
   });
-});
+}
 
 router.get('/', function (req, res) {
   getMessages(res);

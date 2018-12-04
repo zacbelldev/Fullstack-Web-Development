@@ -37,7 +37,9 @@ var saveContact = function (res, contact) {
   });
 }
 
-deleteContact((req, res) => {
+
+var deleteContact = function (res, contact) {
+  // deleteContact((req, res) => {
   Contact.remove(req.params.id, (err, contact) => {
     if (err)
       res.status(500).json({
@@ -45,7 +47,7 @@ deleteContact((req, res) => {
       });
     getContacts(contact);
   });
-});
+}
 
 router.get('/', function (req, res) {
   getContacts(res);
