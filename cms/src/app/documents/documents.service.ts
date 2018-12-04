@@ -47,9 +47,9 @@ export class DocumentsService {
   }
 
   getDocument(id: string): Document {
-    for (let document of this.documents) {
+    for (const document of this.documents) {
       if (document.id === id) {
-        return document
+        return document;
       }
     }
     return null;
@@ -57,8 +57,8 @@ export class DocumentsService {
 
   getMaxId(): number {
     let maxId = 0;
-    for (let document of this.documents) {
-      let currentId = +document.id;
+    for (const document of this.documents) {
+      const currentId = +document.id;
       if (currentId > maxId) {
         maxId = currentId;
       }
