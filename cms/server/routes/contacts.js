@@ -2,28 +2,40 @@ var express = require('express');
 var router = express.Router();
 var Contact = require("../models/contact");
 
-getContacts((req, res) => {
-  Contact.find(req.params.id, (err, contact) => {
-    if (err)
-      res.status(500).json({
-        contact: 'Error'
-      });
-    else
+var getContacts = function (res) {
+  Contact.find()
+    .populate('group')
+    .exec(function (err, contacts) {
+      if (err) {
+        return res.status(500).json({
+          title: 'an error occurred',
+          error: err
+        });
+      }
       res.status(200).json({
-        contact: 'Added successfully'
+        contact: 'success',
+        obj: contacs
       });
-  });
-});
+    })
+}
 
-saveContact((req, res) => {
-  Contact.save(req.params.id, (err, contact) => {
-    if (err)
-      res.status(500).json({
-        contact: 'Error'
+var saveContact = function (res, contact) {
+  if (contact.group && contact.group.length > 0) {
+    for (let groupContact of contact.group) {
+      groupContact = groupContact._id;
+    }
+  }
+  contact.save(function (err, res) {
+    res.setHeader('Content-Type', 'application/json');
+    if (err) {
+      return res.status(500).json({
+        title: 'an error occurred',
+        error: err
       });
+    }
     getContacts(contact);
   });
-});
+}
 
 deleteContact((req, res) => {
   Contact.remove(req.params.id, (err, contact) => {

@@ -24,16 +24,17 @@ export class DocumentsService {
   storeDocuments() {
     this.documents = JSON.parse(JSON.stringify(this.documents));
     const header = new HttpHeaders({ 'Content-Type': 'application/json' });
-    this.http.put('https://cms-data-9c4e6.firebaseio.com/documents.json', this.documents, { headers: header})
-    .subscribe(
-      (documents: Document[]) => {
-        this.documentListChangedEvent.next(this.documents.slice());
-      }
-    );
+    this.http.put('https://cms-data-9c4e6.firebaseio.com/documents.json', this.documents, { headers: header })
+      .subscribe(
+        (documents: Document[]) => {
+          this.documentListChangedEvent.next(this.documents.slice());
+        }
+      );
   }
 
   getDocuments() {
-    this.http.get('https://cms-data-9c4e6.firebaseio.com/documents.json')
+    // this.http.get('https://cms-data-9c4e6.firebaseio.com/documents.json')
+    this.http.get('https://localhost:3000/documents')
       .subscribe(
         (documents: Document[]) => {
           this.documents = documents;
@@ -69,29 +70,61 @@ export class DocumentsService {
     if (!newDocument) {
       return;
     }
-    this.maxDocumentId++;
-    newDocument.id = String(this.maxDocumentId);
-    this.documents.push(newDocument);
-    // let documentsListClone = this.documents.slice();
-    // this.documentListChangedEvent.next(documentsListClone);
-    this.storeDocuments();
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    newDocument.id = '';
+    const strDocument = JSON.stringify(newDocument);
+
+    this.http.post('http://localhost:3000/documents', strDocument, { headers: headers })
+      // .map(
+      //   (res: Response) => {
+      //     return res.json().obj;
+      //   })
+      .subscribe(
+        (documents: Document[]) => {
+          this.documents = documents;
+          this.documentChangedEvent.next(this.documents.slice());
+        });
+    // this.maxDocumentId++;
+    // newDocument.id = String(this.maxDocumentId);
+    // this.documents.push(newDocument);
+    // this.storeDocuments();
   }
 
   updateDocument(originalDocument: Document, newDocument: Document) {
-    if (originalDocument === null || newDocument === null || newDocument === undefined || originalDocument === undefined) {
+    if (!originalDocument || !newDocument) {
       return;
     }
 
-    let pos = this.documents.indexOf(originalDocument);
+    const pos = this.documents.indexOf(originalDocument);
     if (pos < 0) {
       return;
     }
 
-    newDocument.id = originalDocument.id;
-    this.documents[pos] = newDocument;
-    // let documentsListClone = this.documents.slice();
-    // this.documentListChangedEvent.next(documentsListClone);
-    this.storeDocuments();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    const strDocument = JSON.stringify(newDocument);
+
+    this.http.patch('http://localhost:3000/documents/' + originalDocument.id
+      , strDocument
+      , { headers: headers })
+      // .map(
+      //   (res: Response) => {
+      //     return res.json().obj;
+      //   })
+      .subscribe(
+        (documents: Document[]) => {
+          this.documents = documents;
+          this.documentChangedEvent.next(this.documents.slice());
+        });
+
+    // newDocument.id = originalDocument.id;
+    // this.documents[pos] = newDocument;
+    // this.storeDocuments();
   }
 
   deleteDocument(document: Document) {
@@ -99,14 +132,22 @@ export class DocumentsService {
       return;
     }
 
-    let pos = this.documents.indexOf(document);
-    if (pos < 0) {
-      return;
-    }
+    this.http.delete('http://localhost:3000/documents/' + document.id)
+    // .map(
+      //   (res: Response) => {
+      //     return res.json().obj;
+      //   })
+      .subscribe(
+        (documents: Document[]) => {
+          this.documents = documents;
+          this.documentChangedEvent.next(this.documents.slice());
+        });
 
-    this.documents.splice(pos, 1);
-    // let documentsListClone = this.documents.slice();
-    // this.documentListChangedEvent.next(documentsListClone);
-    this.storeDocuments();
+    // let pos = this.documents.indexOf(document);
+    // if (pos < 0) {
+    //   return;
+    // }
+    // this.documents.splice(pos, 1);
+    // this.storeDocuments();
   }
 }
