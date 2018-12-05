@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Contact = require("../models/contact");
+var sequenceGenerator = require('./sequenceGenerator');
 
 var getContacts = function (res) {
   Contact.find()
@@ -14,7 +15,7 @@ var getContacts = function (res) {
       }
       res.status(200).json({
         contact: 'success',
-        obj: contacs
+        obj: contacts
       });
     })
 }
@@ -108,3 +109,6 @@ router.delete('/:id', function (req, res) {
     deleteContact(res, contact);
   });
 });
+
+
+module.exports = router;

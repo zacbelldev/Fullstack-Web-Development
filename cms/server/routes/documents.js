@@ -39,7 +39,8 @@ router.post('/', (req, res, next) => {
     .then(createdDocument => {
       res.status(201).json({
         message: 'Document added successfully',
-        documentId: createdDocument.id
+        // documentId: createdDocument.id
+        document: createdDocument
       });
     })
     .catch(error => {

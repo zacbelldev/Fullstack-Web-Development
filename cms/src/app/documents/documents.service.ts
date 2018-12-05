@@ -3,6 +3,7 @@ import { Document } from './document.model';
 import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -21,24 +22,24 @@ export class DocumentsService {
     this.maxDocumentId = this.getMaxId();
   }
 
-  storeDocuments() {
-    this.documents = JSON.parse(JSON.stringify(this.documents));
-    const header = new HttpHeaders({ 'Content-Type': 'application/json' });
-    this.http.put('https://cms-data-9c4e6.firebaseio.com/documents.json', this.documents, { headers: header })
-      .subscribe(
-        (documents: Document[]) => {
-          this.documentListChangedEvent.next(this.documents.slice());
-        }
-      );
-  }
+  // storeDocuments() {
+  //   this.documents = JSON.parse(JSON.stringify(this.documents));
+  //   const header = new HttpHeaders({ 'Content-Type': 'application/json' });
+  //   this.http.put('https://cms-data-9c4e6.firebaseio.com/documents.json', this.documents, { headers: header })
+  //     .subscribe(
+  //       (documents: Document[]) => {
+  //         this.documentListChangedEvent.next(this.documents.slice());
+  //       }
+  //     );
+  // }
 
   getDocuments() {
     // this.http.get('https://cms-data-9c4e6.firebaseio.com/documents.json')
-    this.http.get('https://localhost:3000/documents')
+    this.http.get<{ message: string, documents: Document[]}>('http://localhost:3000/documents')
       .subscribe(
-        (documents: Document[]) => {
-          this.documents = documents;
-          this.documents.sort((a, b) => (a['name'] < b['name']) ? 1 : (a['name'] > b['name']) ? -1 : 0);
+        (documentData) => {
+          this.documents = documentData.documents;
+          // this.documents.sort((a, b) => (a['name'] < b['name']) ? 1 : (a['name'] > b['name']) ? -1 : 0);
           this.documentListChangedEvent.next(this.documents.slice());
         }, (error: any) => {
           console.log('something bad happened...');

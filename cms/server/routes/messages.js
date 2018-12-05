@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var sequenceGenerator = require('./sequenceGenerator');
 var Message = require("../models/message");
 
 var getMessages = function (req, res) {
@@ -97,3 +98,5 @@ router.delete('/:id', function (req, res) {
     deleteMessage(res, message);
   });
 });
+
+module.exports = router;

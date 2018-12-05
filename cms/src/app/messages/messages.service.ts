@@ -22,16 +22,16 @@ export class MessagesService {
     this.getMessages();
   }
 
-  storeMessages() {
-    this.messages = JSON.parse(JSON.stringify(this.messages));
-    const header = new HttpHeaders({ 'Content-Type': 'application/json' });
-    this.http.put('https://cms-data-9c4e6.firebaseio.com/messages.json', this.messages, { headers: header})
-    .subscribe(
-      (messages: Message[]) => {
-        this.messageListChangedEvent.next(this.messages.slice());
-      }
-    );
-  }
+  // storeMessages() {
+  //   this.messages = JSON.parse(JSON.stringify(this.messages));
+  //   const header = new HttpHeaders({ 'Content-Type': 'application/json' });
+  //   this.http.put('https://cms-data-9c4e6.firebaseio.com/messages.json', this.messages, { headers: header})
+  //   .subscribe(
+  //     (messages: Message[]) => {
+  //       this.messageListChangedEvent.next(this.messages.slice());
+  //     }
+  //   );
+  // }
 
   getMessages() {
     this.http.get('http://localhost:3000/messages/')
@@ -47,9 +47,9 @@ export class MessagesService {
   }
 
   getMessage(id: string): Message {
-    for (let message of this.messages) {
+    for (const message of this.messages) {
       if (message.id === id) {
-        return message
+        return message;
       }
     }
     return null;
@@ -57,8 +57,8 @@ export class MessagesService {
 
   getMaxId(): number {
     let maxId = 0;
-    for (let message of this.messages) {
-      let currentId = +message.id;
+    for (const message of this.messages) {
+      const currentId = +message.id;
       if (currentId > maxId) {
         maxId = currentId;
       }

@@ -15,19 +15,19 @@ export class ContactService {
   contacts: Contact[] = [];
   maxContactId: number;
 
-  storeContacts() {
-    this.contacts = JSON.parse(JSON.stringify(this.contacts));
-    const header = new HttpHeaders({ 'Content-Type': 'application/json' });
-    this.http.put('https://cms-data-9c4e6.firebaseio.com/contacts.json', this.contacts, { headers: header})
-    .subscribe(
-      (contacts: Contact[]) => {
-        this.contactListChangedEvent.next(this.contacts.slice());
-      }
-    );
-  }
+  // storeContacts() {
+  //   this.contacts = JSON.parse(JSON.stringify(this.contacts));
+  //   const header = new HttpHeaders({ 'Content-Type': 'application/json' });
+  //   this.http.put('https://cms-data-9c4e6.firebaseio.com/contacts.json', this.contacts, { headers: header})
+  //   .subscribe(
+  //     (contacts: Contact[]) => {
+  //       this.contactListChangedEvent.next(this.contacts.slice());
+  //     }
+  //   );
+  // }
 
   getContacts() {
-    this.http.get('https://localhost:3000/contacts')
+    this.http.get('http://localhost:3000/contacts')
       .subscribe(
         (contacts: Contact[]) => {
           this.contacts = contacts;
@@ -44,7 +44,7 @@ export class ContactService {
   // }
 
   getContact(id: string): Contact {
-    for (let contact of this.contacts) {
+    for (const contact of this.contacts) {
       if (contact.id === id) {
         return contact;
       }
@@ -54,8 +54,8 @@ export class ContactService {
 
   getMaxId(): number {
     let maxId = 0;
-    for (let contact of this.contacts) {
-      let currentId = +contact.id;
+    for (const contact of this.contacts) {
+      const currentId = +contact.id;
       if (currentId > maxId) {
         maxId = currentId;
       }
@@ -148,7 +148,7 @@ export class ContactService {
         (contacts: Contact[]) => {
           this.contacts = contacts;
           this.contactChangedEvent.next(this.contacts.slice());
-        }); 
+        });
     // if (contact === null || contact === undefined) {
     //   return;
     // }
@@ -159,7 +159,7 @@ export class ContactService {
     // this.contacts.splice(pos, 1);
     // this.storeContacts();
   }
-  
+
   constructor(private http: HttpClient) {
     // this.contacts = MOCKCONTACTS;
     this.maxContactId = this.getMaxId();
