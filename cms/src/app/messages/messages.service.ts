@@ -34,10 +34,11 @@ export class MessagesService {
   // }
 
   getMessages() {
-    this.http.get('http://localhost:3000/messages/')
+    // this.http.get('http://localhost:3000/messages/')
+    this.http.get<{ message: string, messages: Message[]}>('http://localhost:3000/messages')
       .subscribe(
-        (messages: Message[]) => {
-          this.messages = messages;
+        (messageData) => {
+          this.messages = messageData.messages;
           this.messages.sort((a, b) => (a.id < b.id) ? 1 : (a.id > b.id) ? -1 : 0);
           this.messageListChangedEvent.next(this.messages.slice());
         }, (error: any) => {

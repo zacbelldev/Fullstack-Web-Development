@@ -27,10 +27,11 @@ export class ContactService {
   // }
 
   getContacts() {
-    this.http.get('http://localhost:3000/contacts')
+    this.http.get<{ message: string, contacts: Contact[]}>('http://localhost:3000/contacts')
+    // this.http.get('http://localhost:3000/contacts')
       .subscribe(
-        (contacts: Contact[]) => {
-          this.contacts = contacts;
+        (contactData) => {
+          this.contacts = contactData.contacts;
           this.contacts.sort((a, b) => (a['name'] < b['name']) ? 1 : (a['name'] > b['name']) ? -1 : 0);
           this.contactListChangedEvent.next(this.contacts.slice());
         }, (error: any) => {

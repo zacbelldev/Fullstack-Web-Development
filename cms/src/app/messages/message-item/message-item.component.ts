@@ -19,7 +19,7 @@ export class MessageItemComponent implements OnInit {
   constructor(private contactService: ContactService, private messagesService: MessagesService) { }
 
   ngOnInit() {
-    let contact: Contact = this.contactService.getContact(this.message.sender);
+    const contact: Contact = this.contactService.getContact(this.message.sender);
     this.messageSender = contact ? contact.name : 'Contact not loaded';
     // console.log('asdfasdf', contact.name);
   }

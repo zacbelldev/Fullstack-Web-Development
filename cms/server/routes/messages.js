@@ -39,9 +39,25 @@ var deleteMessage = function (req, res) {
   });
 }
 
-router.get('/', function (req, res) {
-  getMessages(res);
-});
+// router.get('/', function (req, res) {
+//   getMessages(res);
+// });
+
+router.get('/', (req, res, next) => {
+  Message.find()
+    .then(messages => {
+      res.status(200).json({
+        message: 'messages fetched successfully',
+        messages: messages
+      });
+    })
+    .catch(error => {
+      returnError(res, error);
+    });
+  }
+);
+
+
 
 router.post('/', function (req, res) {
   var maxMessageId = sequenceGenerator.nextId("messages");

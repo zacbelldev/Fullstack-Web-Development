@@ -14,8 +14,8 @@ var getContacts = function (res) {
         });
       }
       res.status(200).json({
-        contact: 'success',
-        obj: contacts
+        message: 'Contacts fetched successfully',
+        contacts: contacts
       });
     })
 }
